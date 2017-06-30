@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"RxJava2.0", "Rxlifecycle", "Retrofit+Rxjava2.0", "map操作符", "zip操作符", "背压"};
+    private String[] items = new String[]{"RxJava2.0", "Rxlifecycle", "Retrofit+Rxjava2.0", "map操作符", "zip操作符", "背压", "RxBinding", "RxFragment"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 5:
                         startActivity(new Intent(MainActivity.this, RxBackPressActivity.class));
+                        break;
+                    case 6:
+                        startActivity(new Intent(MainActivity.this, RxBindActivity.class));
+                    case 7:
+                        startActivity(new Intent(MainActivity.this, RxFragmentActivity.class));
                         break;
                 }
             }

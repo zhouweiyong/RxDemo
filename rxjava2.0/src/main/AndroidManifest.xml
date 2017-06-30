@@ -23,6 +23,8 @@
         <activity android:name=".RxMapActivity" />
         <activity android:name=".RxZipActivity" />
         <activity android:name=".RxBackPressActivity"/>
+        <activity android:name=".RxBindActivity"/>
+        <activity android:name=".RxFragmentActivity"/>
     </application>
 
 </manifest>
