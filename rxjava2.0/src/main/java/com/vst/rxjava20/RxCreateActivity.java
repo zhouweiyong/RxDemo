@@ -25,7 +25,7 @@ import io.reactivex.functions.Consumer;
 public class RxCreateActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"defer", "from", "just", "timer", "amb"};
+    private String[] items = new String[]{"defer", "from", "just", "timer", "amb", "concat"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class RxCreateActivity extends Activity {
                         amb();
                         break;
                     case 5:
+                        concat();
                         break;
                     case 6:
                         break;
@@ -177,6 +178,31 @@ public class RxCreateActivity extends Activity {
                         L.i("accept>>>" + s);
                     }
                 });
+    }
 
+    /**
+     * Concat操作符连接多个Observable的输出，就好像它们是一个Observable，
+     * 第一个Observable发射的所有数据在第二个Observable发射的任何数据前面，以此类推。
+     */
+    private void concat() {
+        List<Observable<String>> list = new ArrayList<>();
+        list.add(Observable.just("hello1", "hello6"));
+        list.add(Observable.just("hello2", "hello5"));
+        list.add(Observable.just("hello3"));
+//        Observable.concat(list)
+//                .subscribe(new Consumer<String>() {
+//                    @Override
+//                    public void accept(@NonNull String s) throws Exception {
+//                        L.i("accept>>>" + s);
+//                    }
+//                });
+
+        Observable.concat(Observable.just("hello1", "hello6"),Observable.just("hello2", "hello5"),Observable.just("hello3"))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) throws Exception {
+                        L.i("accept>>>" + s);
+                    }
+                });
     }
 }
