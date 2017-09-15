@@ -25,7 +25,7 @@ import io.reactivex.functions.Consumer;
 public class RxCreateActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"defer", "from", "just","timer", "amb"};
+    private String[] items = new String[]{"defer", "from", "just", "timer", "amb"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,6 +138,10 @@ public class RxCreateActivity extends Activity {
                 });
     }
 
+    /**
+     * 定时器
+     * 定时发送一条信息，信息不能指定
+     */
     private void timer() {
         Observable.timer(2, TimeUnit.SECONDS)
                 .subscribe(new Consumer<Long>() {
@@ -148,18 +152,31 @@ public class RxCreateActivity extends Activity {
                 });
     }
 
+    /**
+     * 传递多个Observable给Amb时，它只发射其中一个Observable的数据和通知：最先发送通知给Amb的那个，
+     * 不管发射的是一项数据还是一个onError或onCompleted通知。Amb将忽略和丢弃其它所有Observables的发射物。
+     */
     private void amb() {
         List<Observable<String>> list = new ArrayList<>();
         list.add(Observable.just("hello1"));
         list.add(Observable.just("hello2"));
         list.add(Observable.just("hello3"));
 
-        Observable.amb(list)
+//        Observable.amb(list)
+//                .subscribe(new Consumer<String>() {
+//                    @Override
+//                    public void accept(@NonNull String s) throws Exception {
+//                        L.i("accept>>>" + s);
+//                    }
+//                });
+
+        Observable.ambArray(Observable.just("hello3"), Observable.just("hello1"), Observable.just("hello6"))
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {
                         L.i("accept>>>" + s);
                     }
                 });
+
     }
 }
