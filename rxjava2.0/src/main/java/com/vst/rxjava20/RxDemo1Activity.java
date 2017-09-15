@@ -92,6 +92,7 @@ public class RxDemo1Activity extends Activity implements View.OnClickListener {
         }
     }
 
+    //简单实例
     private void demo1() {
         Observable<String> observable = Observable.create(new ObservableOnSubscribe<String>() {
             @Override
@@ -262,6 +263,11 @@ public class RxDemo1Activity extends Activity implements View.OnClickListener {
         super.onDestroy();
 //        mDisposable.dispose();
         mCompositeDisposable.clear();
+    }
+
+
+    private void demo6(){
+
     }
 
 }
