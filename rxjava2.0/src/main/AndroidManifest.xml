@@ -21,10 +21,12 @@
         <activity android:name=".RxRxlifecycleActivity" />
         <activity android:name=".RxRetrofitActivity" />
         <activity android:name=".RxMapActivity" />
-        <activity android:name=".RxZipActivity" />
-        <activity android:name=".RxBackPressActivity"/>
-        <activity android:name=".RxBindActivity"/>
-        <activity android:name=".RxFragmentActivity"/>
+        <activity android:name=".RxActionActivity" />
+        <activity android:name=".RxBackPressActivity" />
+        <activity android:name=".RxBindActivity" />
+        <activity android:name=".RxFragmentActivity" />
+        <activity android:name=".RxErrorActivity" />
+        <activity android:name=".RxCreateActivity" />
     </application>
 
 </manifest>

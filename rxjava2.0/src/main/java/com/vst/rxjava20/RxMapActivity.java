@@ -177,7 +177,7 @@ public class RxMapActivity extends RxActivity implements View.OnClickListener {
     }
 
     /**
-     * 先登录后注册
+     * 先注册后登陆
      */
     private void demo3() {
 

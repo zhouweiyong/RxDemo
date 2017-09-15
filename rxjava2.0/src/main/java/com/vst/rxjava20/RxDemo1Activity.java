@@ -81,10 +81,8 @@ public class RxDemo1Activity extends Activity implements View.OnClickListener {
                 demo5();
                 break;
             case R.id.btn6:
-
                 break;
             case R.id.btn7:
-
                 break;
             case R.id.btn8:
 
@@ -232,7 +230,7 @@ public class RxDemo1Activity extends Activity implements View.OnClickListener {
     }
 
     /**
-     * 断开被观察者和观察者的连接
+     * 批量断开被观察者和观察者的连接
      */
     private void demo5() {
         mDisposable = Observable.create(new ObservableOnSubscribe<Integer>() {
@@ -266,8 +264,6 @@ public class RxDemo1Activity extends Activity implements View.OnClickListener {
     }
 
 
-    private void demo6(){
 
-    }
 
 }
