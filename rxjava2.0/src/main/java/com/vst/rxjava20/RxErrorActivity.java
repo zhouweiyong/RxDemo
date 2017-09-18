@@ -22,6 +22,7 @@ import io.reactivex.functions.Function;
 /**
  * Created by zwy on 2017/9/15.
  * email:16681805@qq.com
+ * 错误处理操作
  */
 
 public class RxErrorActivity extends Activity {

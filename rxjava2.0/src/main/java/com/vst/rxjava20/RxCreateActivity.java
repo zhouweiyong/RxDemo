@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +24,7 @@ import io.reactivex.functions.Consumer;
 public class RxCreateActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"defer", "from", "just", "timer", "amb", "concat"};
+    private String[] items = new String[]{"defer", "from", "just", "timer"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,10 +53,8 @@ public class RxCreateActivity extends Activity {
                         timer();
                         break;
                     case 4:
-                        amb();
                         break;
                     case 5:
-                        concat();
                         break;
                     case 6:
                         break;
@@ -142,6 +139,7 @@ public class RxCreateActivity extends Activity {
     /**
      * 定时器
      * 定时发送一条信息，信息不能指定
+     * 它将3秒后发射0,然后就完成了。
      */
     private void timer() {
         Observable.timer(2, TimeUnit.SECONDS)
@@ -153,56 +151,5 @@ public class RxCreateActivity extends Activity {
                 });
     }
 
-    /**
-     * 传递多个Observable给Amb时，它只发射其中一个Observable的数据和通知：最先发送通知给Amb的那个，
-     * 不管发射的是一项数据还是一个onError或onCompleted通知。Amb将忽略和丢弃其它所有Observables的发射物。
-     */
-    private void amb() {
-        List<Observable<String>> list = new ArrayList<>();
-        list.add(Observable.just("hello1"));
-        list.add(Observable.just("hello2"));
-        list.add(Observable.just("hello3"));
 
-//        Observable.amb(list)
-//                .subscribe(new Consumer<String>() {
-//                    @Override
-//                    public void accept(@NonNull String s) throws Exception {
-//                        L.i("accept>>>" + s);
-//                    }
-//                });
-
-        Observable.ambArray(Observable.just("hello3"), Observable.just("hello1"), Observable.just("hello6"))
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(@NonNull String s) throws Exception {
-                        L.i("accept>>>" + s);
-                    }
-                });
-    }
-
-    /**
-     * Concat操作符连接多个Observable的输出，就好像它们是一个Observable，
-     * 第一个Observable发射的所有数据在第二个Observable发射的任何数据前面，以此类推。
-     */
-    private void concat() {
-        List<Observable<String>> list = new ArrayList<>();
-        list.add(Observable.just("hello1", "hello6"));
-        list.add(Observable.just("hello2", "hello5"));
-        list.add(Observable.just("hello3"));
-//        Observable.concat(list)
-//                .subscribe(new Consumer<String>() {
-//                    @Override
-//                    public void accept(@NonNull String s) throws Exception {
-//                        L.i("accept>>>" + s);
-//                    }
-//                });
-
-        Observable.concat(Observable.just("hello1", "hello6"),Observable.just("hello2", "hello5"),Observable.just("hello3"))
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(@NonNull String s) throws Exception {
-                        L.i("accept>>>" + s);
-                    }
-                });
-    }
 }

@@ -13,7 +13,10 @@ import java.util.Arrays;
 public class MainActivity extends AppCompatActivity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"RxJava2.0", "Rxlifecycle", "Retrofit+Rxjava2.0", "map操作符", "操作符", "背压", "RxBinding", "RxFragment", "异常处理", "创建Observable"};
+    private String[] items = new String[]{"RxJava2.0", "Rxlifecycle", "Retrofit+Rxjava2.0"
+            , "map操作符", "操作符", "背压", "RxBinding", "RxFragment", "异常处理"
+            , "创建Observable", "组合操作符", "变换操作符", "过滤操作符", "条件操作符", "数学操作符"
+            , "连接操作符"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +62,24 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 9:
                         startActivity(new Intent(MainActivity.this, RxCreateActivity.class));
+                        break;
+                    case 10:
+                        startActivity(new Intent(MainActivity.this, CombinationActivity.class));
+                        break;
+                    case 11:
+                        startActivity(new Intent(MainActivity.this, TransformActivity.class));
+                        break;
+                    case 12:
+                        startActivity(new Intent(MainActivity.this, FilterActivity.class));
+                        break;
+                    case 13:
+                        startActivity(new Intent(MainActivity.this, JudgeActivity.class));
+                        break;
+                    case 14:
+                        startActivity(new Intent(MainActivity.this, MathActivity.class));
+                        break;
+                    case 15:
+                        startActivity(new Intent(MainActivity.this, LinkActivity.class));
                         break;
                 }
             }

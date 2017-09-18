@@ -27,6 +27,12 @@
         <activity android:name=".RxFragmentActivity" />
         <activity android:name=".RxErrorActivity" />
         <activity android:name=".RxCreateActivity" />
+        <activity android:name=".CombinationActivity" />
+        <activity android:name=".FilterActivity" />
+        <activity android:name=".JudgeActivity" />
+        <activity android:name=".MathActivity" />
+        <activity android:name=".TransformActivity" />
+        <activity android:name=".LinkActivity" />
     </application>
 
 </manifest>
