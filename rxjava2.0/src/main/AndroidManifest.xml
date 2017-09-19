@@ -33,6 +33,7 @@
         <activity android:name=".MathActivity" />
         <activity android:name=".TransformActivity" />
         <activity android:name=".LinkActivity" />
+        <activity android:name=".RxLifeActivity" />
     </application>
 
 </manifest>

@@ -11,6 +11,8 @@ import android.widget.ListView;
 import java.util.Arrays;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Predicate;
@@ -18,13 +20,13 @@ import io.reactivex.functions.Predicate;
 /**
  * Created by zwy on 2017/9/18.
  * email:16681805@qq.com
- *条件和布尔操作
+ * 条件和布尔操作
  */
 
 public class JudgeActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{ "all"};
+    private String[] items = new String[]{"all", "contains", "defaultIfEmpty", "sequenceEqual"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,10 +46,13 @@ public class JudgeActivity extends Activity {
                         all();
                         break;
                     case 1:
+                        contains();
                         break;
                     case 2:
+                        defaultIfEmpty();
                         break;
                     case 3:
+                        sequenceEqual();
                         break;
                     case 4:
                         break;
@@ -64,7 +69,6 @@ public class JudgeActivity extends Activity {
     }
 
 
-
     /**
      * 判定是否Observable发射的所有数据都满足某个条件
      * 传递一个谓词函数给All操作符，这个函数接受原始Observable发射的数据，根据计算返回一个布尔值。
@@ -76,7 +80,7 @@ public class JudgeActivity extends Activity {
                 .all(new Predicate<Integer>() {
                     @Override
                     public boolean test(@NonNull Integer i) throws Exception {
-                        return i>11;
+                        return i > 11;
                     }
                 }).subscribe(new Consumer<Boolean>() {
             @Override
@@ -84,5 +88,52 @@ public class JudgeActivity extends Activity {
                 L.i("accept>>>" + rs);
             }
         });
+    }
+
+    /**
+     * 判断是否包含指定的数据
+     */
+    private void contains() {
+        Observable.just("hello", 200, 5f, "ok", 30)
+                .contains(5f)
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        L.i("contains>>>" + aBoolean);
+                    }
+                });
+    }
+
+    /**
+     * 判断是否有数据发送，如果没有，则发送默认的设置值
+     */
+    private void defaultIfEmpty() {
+        Observable.create(new ObservableOnSubscribe<String>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<String> e) throws Exception {
+                e.onComplete();
+            }
+        }).defaultIfEmpty("NO DATA")
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) throws Exception {
+                        L.i("defaultIfEmpty>>>" + s);
+                    }
+                });
+
+    }
+
+    /**
+     * 判断两个Observable发送的数据是否相同
+     * 第三个参数可以指定判断的规则
+     */
+    private void sequenceEqual() {
+        Observable.sequenceEqual(Observable.just("hello", 200, 5f, "ok", 30), Observable.just("hello", 200, 52f, "ok", 30))
+                .subscribe(new Consumer<Boolean>() {
+                    @Override
+                    public void accept(@NonNull Boolean aBoolean) throws Exception {
+                        L.i("sequenceEqual>>>" + aBoolean);
+                    }
+                });
     }
 }

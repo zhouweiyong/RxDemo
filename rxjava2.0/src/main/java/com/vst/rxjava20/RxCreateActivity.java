@@ -24,7 +24,7 @@ import io.reactivex.functions.Consumer;
 public class RxCreateActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"defer", "from", "just", "timer"};
+    private String[] items = new String[]{"defer", "from", "just", "timer","repeat"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +53,7 @@ public class RxCreateActivity extends Activity {
                         timer();
                         break;
                     case 4:
+                        repeat();
                         break;
                     case 5:
                         break;
@@ -151,5 +152,18 @@ public class RxCreateActivity extends Activity {
                 });
     }
 
+    /**
+     * 创建一个重复发出特定的数据项或序列的Observable
+     */
+    private void repeat() {
+        Observable.range(1, 10)
+                .repeat(2)
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        L.i("repeat>>>" + integer);
+                    }
+                });
+    }
 
 }

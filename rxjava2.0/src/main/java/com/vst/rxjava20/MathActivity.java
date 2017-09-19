@@ -10,6 +10,10 @@ import android.widget.ListView;
 
 import java.util.Arrays;
 
+import io.reactivex.Observable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
+
 /**
  * Created by zwy on 2017/9/18.
  * email:16681805@qq.com
@@ -19,7 +23,7 @@ import java.util.Arrays;
 public class MathActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{ "amb", "concat"};
+    private String[] items = new String[]{"count", "concat"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class MathActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
+                        count();
                         break;
                     case 1:
                         break;
@@ -55,5 +60,19 @@ public class MathActivity extends Activity {
                 }
             }
         });
+    }
+
+    /**
+     * 计算原始Observable发射物的数量，然后只发射这个值
+     */
+    private void count() {
+        Observable.range(1, 10)
+                .count()
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(@NonNull Long aLong) throws Exception {
+                        L.i("count>>>" + aLong);
+                    }
+                });
     }
 }

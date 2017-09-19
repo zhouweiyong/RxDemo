@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 public class CombinationActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"amb", "concat", "zip"};
+    private String[] items = new String[]{"amb", "concat", "zip", "merge", "concatWith", "startWith"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,10 +60,13 @@ public class CombinationActivity extends Activity {
                         zip();
                         break;
                     case 3:
+                        merge();
                         break;
                     case 4:
+                        concatWith();
                         break;
                     case 5:
+                        startWith();
                         break;
                     case 6:
                         break;
@@ -125,11 +129,23 @@ public class CombinationActivity extends Activity {
 //                    }
 //                });
 
-        Observable.concat(Observable.just("hello1", "hello6"), Observable.just("hello2", "hello5"), Observable.just("hello3"))
+        Observable.concat(Observable.just("hello1", "hello6").delay(2000, TimeUnit.MILLISECONDS), Observable.just("hello2", "hello5"), Observable.just("hello3"))
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {
                         L.i("accept>>>" + s);
+                    }
+                });
+
+
+    }
+
+    public void concatWith() {
+        Observable.just("hell").concatWith(Observable.just("helll2"))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) throws Exception {
+                        L.i("concatWith>>>" + s);
                     }
                 });
     }
@@ -192,4 +208,29 @@ public class CombinationActivity extends Activity {
                 });
     }
 
+    /**
+     * 跟concat相似，但是merge是交叉合并，数据可能错位在一起
+     */
+    public void merge() {
+        Observable.merge(Observable.range(1, 5).delay(200, TimeUnit.MILLISECONDS), Observable.just("hh1", "hh2", "hh3", "hh4", "hh5"))
+                .subscribe(new Consumer<Serializable>() {
+                    @Override
+                    public void accept(@NonNull Serializable serializable) throws Exception {
+                        L.i("merge>>>" + serializable);
+                    }
+                });
+    }
+
+    /**
+     * 在开始从源Observable发出项之前，先发出指定的数据项或数据序列
+     */
+    private void startWith() {
+        Observable.just("helll1").startWith(Observable.just("helll2"))
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(@NonNull String s) throws Exception {
+                        L.i("startWith>>>" + s);
+                    }
+                });
+    }
 }
