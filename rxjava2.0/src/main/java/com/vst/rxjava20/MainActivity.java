@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private String[] items = new String[]{"RxJava2.0", "Rxlifecycle", "Retrofit+Rxjava2.0"
             , "map操作符", "操作符", "背压", "RxBinding", "RxFragment", "异常处理"
             , "创建Observable", "组合操作符", "变换操作符", "过滤操作符", "条件操作符", "数学操作符"
-            , "连接操作符","Rx生命周期"};
+            , "连接操作符", "Rx生命周期", "block同步研究", "Rx线程研究"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 16:
                         startActivity(new Intent(MainActivity.this, RxLifeActivity.class));
+                        break;
+                    case 17:
+                        startActivity(new Intent(MainActivity.this, BlockActivity.class));
+                        break;
+                    case 18:
+                        startActivity(new Intent(MainActivity.this, ThreadActivitgy.class));
                         break;
                 }
             }

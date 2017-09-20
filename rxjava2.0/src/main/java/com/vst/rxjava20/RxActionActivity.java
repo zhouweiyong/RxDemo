@@ -10,7 +10,10 @@ import android.widget.ListView;
 import com.trello.rxlifecycle2.components.RxActivity;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
@@ -36,7 +39,7 @@ public class RxActionActivity extends RxActivity {
 
     private ListView lv_main;
     private String[] items = new String[]{"throttleFirst", "materialize", "timeInterval", "timeout", "timestamp"
-            , "using", "to"};
+            , "using", "to", "sorted", "toList", "toSortedList", "toMap"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,12 +77,16 @@ public class RxActionActivity extends RxActivity {
                         to();
                         break;
                     case 7:
+                        sorted();
                         break;
                     case 8:
+                        toList();
                         break;
                     case 9:
+                        toSortedList();
                         break;
                     case 10:
+                        toMap();
                         break;
                     case 11:
                         break;
@@ -330,6 +337,72 @@ public class RxActionActivity extends RxActivity {
                     }
                 });
         L.i("to>>>" + to);
+    }
+
+    //排序
+    public void sorted() {
+        Observable.just(8, 5, 9, 2, 6, 3, 7, 1)
+                .sorted()
+                .subscribe(new Consumer<Integer>() {
+                    @Override
+                    public void accept(@NonNull Integer integer) throws Exception {
+                        L.i("sorted>>>" + integer);
+                    }
+                });
+
+    }
+
+    // 收集原始Observable发射的所有数据到一个列表，然后返回这个列表
+    public void toList() {
+        Observable.just(8, 5, 9, 2, 6, 3, 7, 1)
+                .toList()
+                .subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(@NonNull List<Integer> list) throws Exception {
+                        L.i("subscribe");
+                        for (Integer integer : list) {
+                            L.i(">>" + integer);
+
+                        }
+                    }
+                });
+    }
+
+    //toSortedList( ) — 收集原始Observable发射的所有数据到一个有序列表，然后返回这个列表
+    public void toSortedList() {
+        Observable.just(8, 5, 9, 2, 6, 3, 7, 1)
+                .toSortedList()
+                .subscribe(new Consumer<List<Integer>>() {
+                    @Override
+                    public void accept(@NonNull List<Integer> list) throws Exception {
+                        L.i("subscribe");
+                        for (Integer integer : list) {
+                            L.i(">>" + integer);
+
+                        }
+                    }
+                });
+    }
+
+    //将序列数据转换为一个Map，Map的key是根据一个函数计算的
+    public void toMap() {
+        Observable.just(8, 5, 9, 2, 6, 3, 7, 1)
+                .toMap(new Function<Integer, String>() {
+                    @Override
+                    public String apply(@NonNull Integer integer) throws Exception {
+                        return "k" + integer;
+                    }
+                }).subscribe(new Consumer<Map<String, Integer>>() {
+            @Override
+            public void accept(@NonNull Map<String, Integer> map) throws Exception {
+                Set<Map.Entry<String, Integer>> entries = map.entrySet();
+                Iterator<Map.Entry<String, Integer>> it = entries.iterator();
+                while (it.hasNext()) {
+                    Map.Entry<String, Integer> next = it.next();
+                    L.i(next.getKey() + ">>>" + next.getValue());
+                }
+            }
+        });
     }
 
 }

@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.observables.GroupedObservable;
@@ -30,7 +29,7 @@ import io.reactivex.observables.GroupedObservable;
 public class TransformActivity extends Activity {
     private int index;
     private ListView lv_main;
-    private String[] items = new String[]{"buffer", "flatMap", "switchMap", "groupBy", "scan", "concatMap", "window"};
+    private String[] items = new String[]{"buffer", "flatMap", "switchMap", "groupBy","concatMap", "window"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,13 +58,12 @@ public class TransformActivity extends Activity {
                         groupBy();
                         break;
                     case 4:
-                        scan();
-                        break;
-                    case 5:
                         concatMap();
                         break;
-                    case 6:
+                    case 5:
                         window();
+                        break;
+                    case 6:
                         break;
                     case 7:
                         break;
@@ -227,22 +225,7 @@ public class TransformActivity extends Activity {
     }
 
 
-    public void scan() {
-        //递加，每次递加都会发送结果
-        Observable.range(1, 10)
-                .scan(new BiFunction<Integer, Integer, Integer>() {
-                    @Override
-                    public Integer apply(@NonNull Integer sum, @NonNull Integer item) throws Exception {
-                        return sum + item;
-                    }
-                }).subscribe(new Consumer<Integer>() {
-            @Override
-            public void accept(@NonNull Integer integer) throws Exception {
-                L.i("rs===" + integer);
-            }
-        });
 
-    }
 
     /**
      * window操作符非常类似于buffer操作符，区别在于buffer操作符产生的结果是一个List缓存，

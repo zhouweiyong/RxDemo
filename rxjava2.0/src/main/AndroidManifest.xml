@@ -34,6 +34,8 @@
         <activity android:name=".TransformActivity" />
         <activity android:name=".LinkActivity" />
         <activity android:name=".RxLifeActivity" />
+        <activity android:name=".BlockActivity" />
+        <activity android:name=".ThreadActivitgy" />
     </application>
 
 </manifest>

@@ -34,7 +34,7 @@ import io.reactivex.schedulers.Schedulers;
 public class CombinationActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"amb", "concat", "zip", "merge", "concatWith", "startWith"};
+    private String[] items = new String[]{"amb", "concat", "zip", "merge", "concatWith", "startWith", "combineLatest"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +69,7 @@ public class CombinationActivity extends Activity {
                         startWith();
                         break;
                     case 6:
+                        combineLatest();
                         break;
                     case 7:
                         break;
@@ -233,4 +234,25 @@ public class CombinationActivity extends Activity {
                     }
                 });
     }
+
+    /**
+     * CombineLatest操作符行为类似于zip，但是只有当原始的Observable中的每一个都发射了一条数据时zip才发射数据。
+     * CombineLatest则在原始的Observable中任意一个发射了数据时发射一条数据。
+     * 当原始Observables的任何一个发射了一条数据时，CombineLatest使用一个函数结合它们最近发射的数据，
+     * 然后发射这个函数的返回值。
+     */
+    public void combineLatest() {
+        Observable.combineLatest(Observable.range(1, 3), Observable.just("h1", "h2", "h3", "h4"), new BiFunction<Integer, String, String>() {
+            @Override
+            public String apply(@NonNull Integer integer, @NonNull String s) throws Exception {
+                return integer + s;
+            }
+        }).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(@NonNull String s) throws Exception {
+                L.i("combineLatest>>>" + s);
+            }
+        });
+    }
+
 }

@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 import io.reactivex.Observable;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 
 /**
@@ -23,7 +24,7 @@ import io.reactivex.functions.Consumer;
 public class MathActivity extends Activity {
 
     private ListView lv_main;
-    private String[] items = new String[]{"count", "concat"};
+    private String[] items = new String[]{"count", "reduce", "scan"};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,8 +44,10 @@ public class MathActivity extends Activity {
                         count();
                         break;
                     case 1:
+                        reduce();
                         break;
                     case 2:
+                        scan();
                         break;
                     case 3:
                         break;
@@ -74,5 +77,42 @@ public class MathActivity extends Activity {
                         L.i("count>>>" + aLong);
                     }
                 });
+    }
+
+    /**
+     * Reduce操作符应用一个函数接收Observable发射的数据和函数的计算结果作为下次计算的参数，输出最后的结果。
+     * 跟scan操作符很类似，只是scan会输出每次计算的结果，而reduce只会输出最后的结果。
+     */
+    public void reduce() {
+        Observable.range(1, 10)
+                .reduce(new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(@NonNull Integer integer, @NonNull Integer integer2) throws Exception {
+                        L.i(integer + ">>>>" + integer2);
+                        return integer + integer2;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(@NonNull Integer integer) throws Exception {
+                L.i("subscribe>>>" + integer);
+            }
+        });
+    }
+
+    public void scan() {
+        //递加，每次递加都会发送结果
+        Observable.range(1, 10)
+                .scan(new BiFunction<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer apply(@NonNull Integer sum, @NonNull Integer item) throws Exception {
+                        return sum + item;
+                    }
+                }).subscribe(new Consumer<Integer>() {
+            @Override
+            public void accept(@NonNull Integer integer) throws Exception {
+                L.i("rs===" + integer);
+            }
+        });
+
     }
 }
