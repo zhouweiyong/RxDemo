@@ -3,6 +3,7 @@ package com.vst.rxjava20;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -88,7 +89,7 @@ public class RxMapActivity extends RxActivity implements View.OnClickListener {
                 demo3();
                 break;
             case R.id.btn4:
-
+                demo4();
                 break;
             case R.id.btn5:
 
@@ -119,6 +120,7 @@ public class RxMapActivity extends RxActivity implements View.OnClickListener {
                 .map(new Function<Integer, String>() {
                     @Override
                     public String apply(@NonNull Integer integer) throws Exception {
+                        L.i("" + Thread.currentThread().getName());
                         return "map to " + integer;
                     }
                 })
@@ -240,5 +242,43 @@ public class RxMapActivity extends RxActivity implements View.OnClickListener {
                         mProgressDialog.dismiss();
                     }
                 });
+    }
+
+
+    public void demo4() {
+        Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
+                L.i("Thread1>>>" + Thread.currentThread().getName());
+                //Thread1>>>RxCachedThreadScheduler-1
+                e.onNext(16);
+                e.onComplete();
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Function<Integer, ObservableSource<String>>() {
+                    @Override
+                    public ObservableSource<String> apply(final Integer integer) throws Exception {
+                        L.i("Thread2>>>" + Thread.currentThread().getName());
+                        //Thread2>>>main
+                        L.i("flatMap>>>" + integer);
+                        return Observable.create(new ObservableOnSubscribe<String>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<String> e) throws Exception {
+                                L.i("Thread3>>>" + Thread.currentThread().getName());
+                                //Thread3>>>RxCachedThreadScheduler-1
+                                e.onNext("I have " + integer);
+                                e.onComplete();
+                            }
+                        }).subscribeOn(Schedulers.io());
+                    }
+                }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String s) throws Exception {
+                L.i("Thread4>>>" + Thread.currentThread().getName());
+                //Thread4>>>main
+                L.i("onNext>>>" + s);
+            }
+        });
     }
 }

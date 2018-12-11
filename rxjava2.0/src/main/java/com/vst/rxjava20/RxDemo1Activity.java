@@ -264,6 +264,4 @@ public class RxDemo1Activity extends Activity implements View.OnClickListener {
     }
 
 
-
-
 }
